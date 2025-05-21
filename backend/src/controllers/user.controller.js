@@ -39,14 +39,14 @@ export const registerUser = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: isProd,                // Requires HTTPS in prod
-            sameSite: isProd ? "None" : "Lax", // None for cross-origin, Lax for local dev
+            sameSite: "None", // None for cross-origin, Lax for local dev
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: isProd,
-            sameSite: isProd ? "None" : "Lax",
+            sameSite: "None",
             maxAge: 5 * 60 * 1000,
         });
 
@@ -96,14 +96,14 @@ export const loginUser = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: isProd,                // Requires HTTPS in prod
-            sameSite: isProd ? "None" : "Lax", // None for cross-origin, Lax for local dev
+            sameSite: "None", // None for cross-origin, Lax for local dev
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: isProd,
-            sameSite: isProd ? "None" : "Lax",
+           sameSite: "None",
             maxAge: 5 * 60 * 1000,
         });
 

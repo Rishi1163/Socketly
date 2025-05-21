@@ -3,7 +3,7 @@ import { baseUrl } from '../common/summaryApi';
 
 export const Axios = axios.create({
   baseURL: baseUrl,
-  withCredentials: true,
+  withCredentials: true, // Send cookies (refreshToken/accessToken) with requests
 });
 
 const refreshAccessToken = async () => {
@@ -13,38 +13,41 @@ const refreshAccessToken = async () => {
 
     if (newAccessToken) {
       console.log("Access token refreshed");
-      return true;
+      // Set default Authorization header with new token
+      Axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+      return newAccessToken;
     }
 
-    return false;
+    return null;
   } catch (error) {
     console.log("Error in refreshAccessToken:", error);
-    return false;
+    return null;
   }
 };
 
+// Request interceptor for debugging and injecting token if needed
 Axios.interceptors.request.use(
   (config) => {
-    console.log('Request sent to:', config.url); // For debugging
+    console.log('Request sent to:', config.url);
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle token refresh on 401 errors
+// Response interceptor to retry request if access token expired
 Axios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If 401 Unauthorized, attempt to refresh the token
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const refreshed = await refreshAccessToken();
-        if (refreshed) {
-          return Axios(originalRequest); 
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+          return Axios(originalRequest);
         }
       } catch (refreshError) {
         console.error("Refresh token failed:", refreshError);

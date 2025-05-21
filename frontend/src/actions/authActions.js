@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 export const register = (formData, navigate, socket) => async (dispatch) => {
     try {
         dispatch(setLoading(true))
-        const res = await Axios.post(summaryApi.register.url, formData)
+        const res = await Axios.post(summaryApi.register.url, formData, { withCredentials: true })
         dispatch(setUser(res.data.user))
         toast.success("Registered successfully!")
         localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -26,7 +26,7 @@ export const login = (formData, navigate, socket) => async (dispatch) => {
     try {
         dispatch(setLoading(true))
 
-        const res = await Axios.post(summaryApi.login.url, formData)
+        const res = await Axios.post(summaryApi.login.url, formData, { withCredentials: true })
 
         const user = res.data.user
         dispatch(setUser(user))
@@ -35,7 +35,7 @@ export const login = (formData, navigate, socket) => async (dispatch) => {
 
         if (user && user._id) {
             socket.io.opts.query = { userId: user._id }
-                socket.connect()
+            socket.connect()
         } else {
             console.error("User ID is undefined in login response")
             toast.error("Login failed: User ID is missing")

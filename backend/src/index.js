@@ -10,7 +10,7 @@ import { server, app } from './utils/socket.js'
 dotenv.config({
     path: "./.env"
 })
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 
 app.use(cors({
     origin: process.env.FRONTEND_URL,

@@ -103,7 +103,7 @@ export const loginUser = async (req, res) => {
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: true,
-           sameSite: "None",
+            sameSite: "None",
             maxAge: 5 * 60 * 1000,
         });
 
@@ -124,14 +124,24 @@ export const loginUser = async (req, res) => {
     }
 }
 
-export const logoutUser = async (req, res) => {
-    const userId = req.user.id
-    res.clearCookie("refreshToken");
-    res.clearCookie("accessToken");
-    await UserModel.findByIdAndUpdate(userId, {
-        isOnline: false
-    })
-    res.status(200).json({ message: "Logged out successfully" });
+export const logoutUser = (req, res) => {
+    try {
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+        });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+        });
+
+        return res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error("Logout error:", error);
+        return res.status(500).json({ message: 'Logout failed', error: error.message });
+    }
 };
 
 export const editFullName = async (req, res) => {

@@ -7,7 +7,7 @@ const userRoutes = Router()
 
 userRoutes.post('/register', registerUser)
 userRoutes.post('/login',loginUser)
-userRoutes.post('/logout',verifyUser,logoutUser)
+userRoutes.post('/logout',logoutUser)
 userRoutes.patch('/edit-name', verifyUser, editFullName)
 userRoutes.put('/edit-profilePic', verifyUser, upload.single("profilePic"), editProfilepic)
 userRoutes.get('/details',verifyUser,getUserDetails)

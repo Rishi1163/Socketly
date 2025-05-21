@@ -12,5 +12,5 @@ userRoutes.patch('/edit-name', verifyUser, editFullName)
 userRoutes.put('/edit-profilePic', verifyUser, upload.single("profilePic"), editProfilepic)
 userRoutes.get('/details',verifyUser,getUserDetails)
 userRoutes.post('/refreshAccessToken',refreshAccessToken)
-userRoutes.get('/all',verifyUser, getAllUsers)
+userRoutes.get('/all', getAllUsers)
 export { userRoutes }

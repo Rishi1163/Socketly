@@ -5,7 +5,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const initialState = {
     user: user ? user : null,
     allUsers: [],
-    onlineUsers: [], // ✅ add this line
+    onlineUsers: [], 
     loading: false,
     error: null
 }
@@ -20,12 +20,12 @@ const authSlice = createSlice({
         setAllUsers: (state, action) => {
             state.allUsers = action.payload;
         },
-        setOnlineUsers: (state, action) => { // ✅ add this reducer
+        setOnlineUsers: (state, action) => {
             state.onlineUsers = action.payload;
         },
         clearUser: (state) => {
             state.user = null;
-            state.onlineUsers = []; // ✅ clear online users when logging out
+            state.onlineUsers = []; // clear online users when logging out
         },
         setLoading: (state, action) => {
             state.loading = action.payload;
